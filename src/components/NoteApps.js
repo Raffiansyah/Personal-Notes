@@ -9,16 +9,16 @@ class NoteApp extends React.Component{
         super(props);
         this.state = {
             notes: getInitialData(),
-            search: ''
+            filterText: ''
         }
         this.onAddNoteHandler = this.onAddNoteHandler.bind(this)
-        this.filterUpdate = this.filterUpdate.bind(this)
+        this.onSearch = this.onSearch.bind(this)
         this.onDelete = this.onDelete.bind(this)
     }
 
-    filterUpdate(value){
+    onSearch(value){
         this.setState({
-            search: value
+            filterText: value
         })
     }
 
@@ -45,30 +45,18 @@ class NoteApp extends React.Component{
     }
 
     render(){
+        console.log('update from child', this.state.filterText)
         const note = this.state.notes.length;
-            if (note === 0) {
-                return(
-                    <>
-                    <Header onSearch={this.filterUpdate}/>
-                    <div className="note-app__body">
-                        <NoteInput addNote={this.onAddNoteHandler} />
-                        <h2>Catatan Aktif</h2>
-                        <p className="notes-list__empty-message">Tidak ada catatan</p>
-                    </div>
-                    </>
-                )
-            } else {
-                return(
-                    <>
-                    <Header onSearch={this.filterUpdate}/>
-                    <div className="note-app__body">
-                        <NoteInput addNote={this.onAddNoteHandler} />
-                        <h2>Catatan Aktif</h2>
-                        <NoteList notes={this.state.notes} onDelete={this.onDelete} onArchive={this.archiveHandler}/>
-                    </div>
-                    </>
-                )
-            }
+        return(
+            <>
+            <Header filterText={this.state.filterText} onSearch={this.onSearch} />
+            <div className="note-app__body">
+                <NoteInput addNote={this.onAddNoteHandler} />
+                <h2>Catatan Aktif</h2>
+                {(note === 0)?<p className="notes-list__empty-message">Tidak ada catatan</p>:<NoteList notes={this.state.notes} onDelete={this.onDelete} onArchive={this.archiveHandler} filterText={this.state.filterText} />}    
+            </div>
+            </>
+        )
     }
 }
 
