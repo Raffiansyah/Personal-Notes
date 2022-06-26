@@ -9,16 +9,16 @@ class NoteApp extends React.Component{
         super(props);
         this.state = {
             notes: getInitialData(),
-            filterText: ''
+            filterText: '',
         }
         this.onAddNoteHandler = this.onAddNoteHandler.bind(this)
         this.onSearch = this.onSearch.bind(this)
         this.onDelete = this.onDelete.bind(this)
     }
 
-    onSearch(value){
+    onSearch(event){
         this.setState({
-            filterText: value
+            filterText: event.target.value
         })
     }
 
@@ -45,15 +45,21 @@ class NoteApp extends React.Component{
     }
 
     render(){
-        console.log('update from child', this.state.filterText)
-        const note = this.state.notes.length;
+        if(this.state.filterText === this.state.notes){
+            console.log('FVCK')
+        }
+
+
         return(
             <>
-            <Header filterText={this.state.filterText} onSearch={this.onSearch} />
+            <Header onSearch={this.onSearch} />
             <div className="note-app__body">
                 <NoteInput addNote={this.onAddNoteHandler} />
                 <h2>Catatan Aktif</h2>
-                {(note === 0)?<p className="notes-list__empty-message">Tidak ada catatan</p>:<NoteList notes={this.state.notes} onDelete={this.onDelete} onArchive={this.archiveHandler} filterText={this.state.filterText} />}    
+                {(this.state.notes.length === 0 && this.state.notes !== this.state.filterText)?
+                <p className="notes-list__empty-message">Tidak ada catatan</p>:
+                <NoteList notes={this.state.notes} onDelete={this.onDelete} filterText={this.state.filterText} />
+                }
             </div>
             </>
         )

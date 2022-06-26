@@ -1,13 +1,10 @@
 import React from "react";
 import DeleteBtn from "./DeleteBtn";
-import ArchiveButton from "./ArchiveBtn";
-import RestoreButton from "./restoreBtn";
 
-function NoteAction({id, onDelete, onArchive, onRestore, archived}){
+function NoteAction({id, onDelete}){
     return (
         <div className="note-item__action">
             <DeleteBtn id={id} onDelete={onDelete} />
-            {(!archived)? <ArchiveButton onArchive={onArchive}/> : <RestoreButton onRestore={onRestore}/>}
         </div>
     )
 }
